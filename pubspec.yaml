@@ -19,12 +19,19 @@ dependencies:
   equatable: ^2.0.7
   google_fonts: ^6.3.3
   cupertino_icons: ^1.0.8
+  email_validator: ^2.1.17
 
   # Storage (Nota: GetStorage funciona bem sem o GetX Framework)
   get_storage: ^2.1.1
+  flutter_secure_storage: ^9.2.2
   dynamic_color: ^1.8.1
 
   window_manager: ^0.4.3
+
+  firebase_core: ^2.24.0
+  firebase_auth: ^4.16.0
+  firebase_database: ^10.3.0
+  # Removendo Firestore e Storage para simplificar, já que não estamos usando
 
 dev_dependencies:
   flutter_test:

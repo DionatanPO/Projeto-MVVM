@@ -4,6 +4,9 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   dynamic_color
+  firebase_auth
+  firebase_core
+  flutter_secure_storage_windows
   screen_retriever_windows
   window_manager
 )

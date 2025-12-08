@@ -1,10 +1,11 @@
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:untitled/src/ui/login/presentation/views/login_view.dart';
+import '../ui/auth/presentation/views/auth_wrapper_view.dart';
 
 import '../ui/home/presentation/views/home_shell_view.dart';
 import '../ui/onboarding/onboarding_view.dart';
+import '../ui/admin/admin_view.dart';
 
 
 part 'app_router.g.dart';
@@ -30,10 +31,21 @@ GoRouter router(Ref ref) {
         builder: (context, state) => const HomeShellView(),
       ),
       GoRoute(
+        path: '/auth',
+        name: 'auth',
+        // Agora chamamos o Shell, que carrega o Menu + Dashboard
+        builder: (context, state) => const AuthWrapperView(),
+      ),
+      GoRoute(
+        path: '/admin',
+        name: 'admin',
+        builder: (context, state) => const AdminView(),
+      ),
+      // Redirect old login route to new auth route
+      GoRoute(
         path: '/login',
         name: 'login',
-        // Agora chamamos o Shell, que carrega o Menu + Dashboard
-        builder: (context, state) => const LoginView(),
+        redirect: (context, state) => '/auth',
       ),
     ],
   );

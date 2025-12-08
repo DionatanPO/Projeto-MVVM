@@ -23,7 +23,7 @@ class OnboardingView extends ConsumerWidget {
     void next() {
       if (isLastPage) {
         ref.read(onboardingViewModelProvider.notifier).completeOnboarding();
-        context.go('/login');
+        context.go('/auth');
       } else {
         ref
             .read(onboardingViewModelProvider.notifier)
@@ -188,7 +188,7 @@ class OnboardingView extends ConsumerWidget {
                                 ref
                                     .read(onboardingViewModelProvider.notifier)
                                     .completeOnboarding();
-                                context.go('/login');
+                                context.go('/auth');
                               },
                               style: TextButton.styleFrom(
                                 foregroundColor: colorScheme.secondary,
