@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import ' dashboard_view.dart';
+import '../../../dashboard/presentation/views/dashboard_view.dart';
 import '../../../../ui/core/widgets/app_title_bar.dart'; // Ajuste o import
 import '../viewmodel/home_navigation_vm.dart';
 import '../widgets/home_sidebar.dart';

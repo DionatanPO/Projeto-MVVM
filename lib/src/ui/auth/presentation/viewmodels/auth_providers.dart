@@ -1,57 +1,74 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_core/firebase_core.dart';
 
-import '../../data/datasources/auth_local_datasource.dart';
-import '../../data/datasources/firebase_realtime_auth_datasource.dart';
-import '../../data/repositories/auth_repository_impl.dart';
+import '../../domain/entities/auth_credentials.dart';
+import '../../domain/entities/auth_result.dart';
+import '../../domain/entities/user_entity.dart';
+import '../../domain/entities/role_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/usecases/forgot_password_usecase.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/logout_usecase.dart';
 import '../../domain/usecases/register_usecase.dart';
 
-
-
-final flutterSecureStorageProvider = Provider<FlutterSecureStorage>((ref) {
-  return const FlutterSecureStorage();
-});
-
-final getStorageProvider = FutureProvider<GetStorage>((ref) async {
-  await GetStorage.init();
-  return GetStorage();
-});
-
-final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
-  return FirebaseAuth.instance;
-});
-
-final firebaseDatabaseProvider = Provider<FirebaseDatabase>((ref) {
-  return FirebaseDatabase.instanceFor(
-    app: Firebase.app(),
-    databaseURL: 'https://projeto-mvvm-default-rtdb.firebaseio.com/',
+class DummyAuthRepository implements AuthRepository {
+  final _dummyUser = const UserEntity(
+    id: 'dummy_id',
+    name: 'Dummy User',
+    email: 'dummy@example.com',
+    emailVerified: true,
+    role: RoleEntity(type: RoleType.employee, permissions: [], description: 'Employee role'),
   );
-});
 
-final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
-  final secureStorage = ref.watch(flutterSecureStorageProvider);
-  final storage = ref.watch(getStorageProvider).value ?? GetStorage();
-  return AuthLocalDataSource(secureStorage, storage);
-});
+  @override
+  Future<AuthResult> login(AuthCredentials credentials) async {
+    // Simulate a successful login
+    return AuthResult.success(user: _dummyUser, token: 'dummy_token');
+  }
 
-final firebaseAuthDataSourceProvider = Provider<FirebaseRealtimeAuthDataSource>((ref) {
-  final firebaseAuth = ref.watch(firebaseAuthProvider);
-  final database = ref.watch(firebaseDatabaseProvider);
-  return FirebaseRealtimeAuthDataSource(firebaseAuth, database);
-});
+  @override
+  Future<AuthResult> register({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    // Simulate a successful registration
+    return AuthResult.success(
+        user: _dummyUser.copyWith(name: name, email: email),
+        token: 'dummy_token');
+  }
+
+  @override
+  Future<bool> forgotPassword(String email) async {
+    // Simulate a successful forgot password request
+    return true;
+  }
+
+  @override
+  Future<void> logout() async {
+    // Simulate a successful logout
+    return;
+  }
+
+  @override
+  Future<bool> get isLoggedIn async {
+    // Always return false to make the login screen appear initially
+    // The user can then "login" with dummy credentials.
+    return false;
+  }
+
+  @override
+  Future<UserEntity?> getCurrentUser() async {
+    return _dummyUser;
+  }
+
+  @override
+  Future<String?> getAuthToken() async {
+    return 'dummy_token';
+  }
+}
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  final localDataSource = ref.watch(authLocalDataSourceProvider);
-  final remoteDataSource = ref.watch(firebaseAuthDataSourceProvider);
-  return AuthRepositoryImpl(localDataSource, remoteDataSource);
+  return DummyAuthRepository();
 });
 
 final loginUseCaseProvider = Provider<LoginUseCase>((ref) {

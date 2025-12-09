@@ -4,8 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.7.2
-
+  sdk: '>=3.7.2 <4.0.0'
 dependencies:
   flutter:
     sdk: flutter
@@ -27,11 +26,10 @@ dependencies:
   dynamic_color: ^1.8.1
 
   window_manager: ^0.4.3
+  fpdart: ^1.2.0
 
-  firebase_core: ^2.24.0
-  firebase_auth: ^4.16.0
-  firebase_database: ^10.3.0
-  # Removendo Firestore e Storage para simplificar, já que não estamos usando
+  # Gráficos
+  syncfusion_flutter_charts: ^28.1.35
 
 dev_dependencies:
   flutter_test:
